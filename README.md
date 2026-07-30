@@ -42,8 +42,9 @@ Road traffic accidents involving two-wheeler riders frequently result in delayed
                                                    │
                                                    ▼
                                          [ AI Incident Summary ]
-
-📂 Repository Structure
+```
+### 📂 Repository Structure
+```text
 smart-helmet-system/
 ├── firmware/
 │   ├── main_helmet_esp32.ino    # ESP32 sensor integration & main loop
@@ -62,3 +63,4 @@ smart-helmet-system/
 ├── .gitignore
 ├── LICENSE
 └── README.md
+```
