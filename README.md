@@ -1,4 +1,4 @@
-# 🪖 IoT Smart Helmet: Automatic Accident Detection & AI Incident Reporting
+i# 🪖 IoT Smart Helmet: Automatic Accident Detection & AI Incident Reporting
 
 An affordable, IoT-enabled smart helmet designed to drastically reduce emergency response times for two-wheeler accidents. Utilizing onboard sensors and an **ESP32** microcontroller, the helmet automatically detects severe crashes, captures live **GPS coordinates**, transmits instant **SMS alerts**, and triggers an **AI-assisted incident summary report** (estimating impact severity and scenario details) for first responders.
 
@@ -42,7 +42,7 @@ Road traffic accidents involving two-wheeler riders frequently result in delayed
                                                    │
                                                    ▼
                                          [ AI Incident Summary ]
-```
+
 📂 Repository Structure
 smart-helmet-system/
 ├── firmware/
