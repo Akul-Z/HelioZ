@@ -1,6 +1,3 @@
-# HelioZ
-
-```markdown
 # 🪖 IoT Smart Helmet: Automatic Accident Detection & AI Incident Reporting
 
 An affordable, IoT-enabled smart helmet designed to drastically reduce emergency response times for two-wheeler accidents. Utilizing onboard sensors and an **ESP32** microcontroller, the helmet automatically detects severe crashes, captures live **GPS coordinates**, transmits instant **SMS alerts**, and triggers an **AI-assisted incident summary report** (estimating impact severity and scenario details) for first responders.
@@ -26,144 +23,42 @@ Road traffic accidents involving two-wheeler riders frequently result in delayed
 
 ## 🏗️ System Architecture
 
-
+```text
+[ Onboard Sensors ]
+  ├── MPU6050 (G-Force & Rotation)
+  └── NEO-6M GPS (Latitude & Longitude)
+        │
+        ▼
+[ ESP32 Microcontroller ]
+  ├── Hardware Processing & Crash Detection Logic
+  └── 15-Second Manual Override Switch (Cancel Button & Buzzer)
+        │
+        ├──► [ GSM Module (SIM800L) ] ────► Direct Emergency SMS Alerts
+        │
+        └──► [ Wi-Fi / Cellular Data ] ───► [ FastAPI Cloud Backend ]
+                                                   │
+                                                   ▼
+                                         [ OpenAI API Integration ]
+                                                   │
+                                                   ▼
+                                         [ AI Incident Summary ]
 ```
-
-[ MPU6050 IMU ] ──────┐
-[ Piezo Impact ] ─────┼──(I2C/Digital)──> [ ESP32 Microcontroller ]
-[ NEO-6M GPS  ] ──────┘                          │
-├──(GSM SIM800L)──> [ Emergency Contacts SMS ]
-│
-(Wi-Fi / Cellular API)
-│
-▼
-[ Cloud Server / FastAPI ]
-│
-(OpenAI LLM API)
-│
-▼
-[ AI Crash Severity Report ]
-
-```
-
----
-
-## 🔌 Hardware Pinout Connection
-
-| Component | Module Pin | ESP32 Pin | Function / Description |
-| :--- | :--- | :--- | :--- |
-| **MPU6050** | `SCL` / `SDA` | `GPIO 22` / `GPIO 21` | $I^2C$ Accelerometer + Gyroscope |
-| **NEO-6M GPS** | `TX` / `RX` | `GPIO 16` (RX2) / `GPIO 17` (TX2) | Satellite Location Tracking |
-| **SIM800L GSM**| `TX` / `RX` | `GPIO 4` (RX1) / `GPIO 2` (TX1) | Cellular SMS Dispatch |
-| **Cancel Button**| `OUT` | `GPIO 13` (Pull-Up) | 15s False Alarm Abort Switch |
-| **Buzzer** | `Positive` | `GPIO 12` | Audible Countdown Alarm |
-
----
-
-## 📂 Repository Structure
-
-
-```
-
+📂 Repository Structure
+smart-helmet-system/
 ├── firmware/
-│   └── main_helmet_esp32.ino    # Arduino C++ sketch for ESP32 hardware & logic
+│   ├── main_helmet_esp32.ino    # ESP32 sensor integration & main loop
+│   ├── config.h                 # Wi-Fi, GSM, and API key configurations
+│   └── libraries/               # Required local driver dependencies
 ├── server/
-│   ├── app.py                   # FastAPI cloud backend for AI reporting
-│   └── requirements.txt         # Python dependencies
+│   ├── app.py                   # FastAPI REST server & webhook endpoint
+│   ├── ai_generator.py          # OpenAI API wrapper for crash summary generation
+│   ├── requirements.txt         # Python package dependencies
+│   └── .env.example             # Environment variable template
 ├── hardware/
-│   └── wiring_diagram.png       # Schematic wiring diagram
-├── README.md
-└── LICENSE
-
-```
-
----
-
-## ⚡ Quickstart & Installation
-
-### 1. Firmware Flashing (ESP32)
-1. Open `firmware/main_helmet_esp32.ino` in the **Arduino IDE**.
-2. Install the required libraries via **Sketch → Include Library → Manage Libraries**:
-   * `Adafruit MPU6050`
-   * `TinyGPS++`
-   * `HardwareSerial`
-3. Configure your target Emergency Contact numbers and Cloud Server Endpoint inside the code:
-   ```cpp
-   const char* EMERGENCY_PHONE_NUMBER = "+1234567890";
-   const char* BACKEND_SERVER_URL     = "[https://your-api-server.com/api/report-accident](https://your-api-server.com/api/report-accident)";
-
-```
-
-4. Select board **ESP32 Dev Module** and flash the sketch.
-
-### 2. AI Reporting Backend Setup
-
-1. Navigate to the `server/` directory:
-```bash
-cd server
-
-```
-
-
-2. Install Python dependencies:
-```bash
-pip install -r requirements.txt
-
-```
-
-
-3. Create a `.env` file containing your API credentials:
-```env
-OPENAI_API_KEY=your_openai_api_key_here
-
-```
-
-
-4. Launch the API server:
-```bash
-uvicorn app:app --host 0.0.0.0 --port 8000
-
-```
-
-
-
----
-
-## 📋 Sample AI Incident Report Output
-
-When an accident payload is posted to the backend server, the integrated AI model evaluates telemetry patterns and outputs a brief report:
-
-```json
-{
-  "incident_id": "ACC-2026-0891",
-  "status": "CRITICAL_ALERT",
-  "timestamp": "2026-07-30T22:09:00Z",
-  "location": {
-    "latitude": 12.9716,
-    "longitude": 77.5946,
-    "google_maps_link": "[https://maps.google.com/?q=12.9716,77.5946](https://maps.google.com/?q=12.9716,77.5946)"
-  },
-  "ai_incident_summary": {
-    "severity_level": "HIGH",
-    "impact_g_force": "7.2g",
-    "collision_type": "High-Impact Lateral Collision with Rollover",
-    "recommended_triage_briefing": "Rider sustained severe impact force exceeding 7g followed by full 180° helmet inversion. High risk of traumatic head/neck injury and loss of consciousness. Immediate dispatch of ALS (Advanced Life Support) recommended."
-  }
-}
-
-```
-
----
-
-## 🛡️ License
-
-This project is licensed under the MIT License - see the [LICENSE](https://www.google.com/search?q=LICENSE) file for details.
-
-```
-
-<ElicitationsGroup message="Where would you like to focus next to finalize your project setup?">
-  <Elicitation label="Generate full ESP32 Arduino firmware code" query="Provide the complete C++ code for the ESP32 firmware including MPU6050, GPS, SIM800L, and the 15-second cancel button timer."/>
-  <Elicitation label="Build the Python FastAPI backend for AI summaries" query="Write the Python FastAPI server code that receives sensor JSON from the ESP32 and uses the OpenAI API to generate the AI incident summary."/>
-</ElicitationsGroup>
-
-```
+│   ├── schematic_diagram.png    # Circuit wiring diagram
+│   └── pinout_guide.md          # ESP32 pin configuration documentation
+├── docs/
+│   └── API_SPECIFICATION.md     # JSON payload & alert response schema
+├── .gitignore
+├── LICENSE
+└── README.md
