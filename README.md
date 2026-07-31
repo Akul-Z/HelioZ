@@ -2,7 +2,7 @@
 
 An affordable, IoT-enabled smart helmet designed to drastically reduce emergency response times for two-wheeler accidents. Utilizing onboard sensors and an **ESP32** microcontroller, the helmet automatically detects severe crashes, captures live **GPS coordinates**, transmits instant **SMS alerts**, and triggers an **AI-assisted incident summary report** (estimating impact severity and scenario details) for first responders.
 
-![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 ![Hardware: ESP32](https://img.shields.io/badge/Hardware-ESP32%20%7C%20NEO--6M%20%7C%20MPU6050-blue)
 ![Backend: Python / FastAPI](https://img.shields.io/badge/Backend-FastAPI%20%7C%20OpenAI%20API-green)
 
